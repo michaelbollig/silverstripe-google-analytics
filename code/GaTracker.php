@@ -27,18 +27,14 @@ class GaTracker extends SiteTreeExtension {
 			$gacode = 'var _gaq = _gaq||[];
 				' . $track . '
 				(function(){
-					var ga = document.createElement("script");
-					ga.type = "text/javascript";
-					ga.async = true;
+					var ga = document.createElement("script"); ga.type = "text/javascript"; ga.async = true;
 					ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
-					var s = document.getElementsByTagName("script")[0];
-					s.parentNode.insertBefore(ga,s);
+					var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga,s);
 				})();
 				function gaDlTracker(){
 					var a = document.getElementsByTagName("a");
 					for(i = 0; i < a.length; i++){
 						if(a[i].href.indexOf(location.host) == -1){
-							a[i].target = "_blank";
 							a[i].onclick = function(){
 								_gaq.push(["_trackEvent","Outgoing Links",this.href.replace(/^http\:\/\//i,"")]);
 							}
