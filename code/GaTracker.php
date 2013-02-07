@@ -26,18 +26,18 @@ class GaTracker extends SiteTreeExtension {
 				$track = '_gaq.push(["_setAccount","' . GaTrackingCode . '"],["_trackPageview"]);';
 			$gacode = 'var _gaq = _gaq||[];
 				' . $track . '
-				(function() {
+				(function(){
 					var ga = document.createElement("script");
 					ga.type = "text/javascript";
 					ga.async = true;
 					ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
 					var s = document.getElementsByTagName("script")[0];
-					s.parentNode.insertBefore(ga, s);
+					s.parentNode.insertBefore(ga,s);
 				})();
 				function gaDlTracker(){
 					var a = document.getElementsByTagName("a");
 					for(i = 0; i < a.length; i++){
-						if (a[i].href.indexOf(location.host) == -1){
+						if(a[i].href.indexOf(location.host) == -1){
 							a[i].target = "_blank";
 							a[i].onclick = function(){
 								_gaq.push(["_trackEvent","Outgoing Links",this.href.replace(/^http\:\/\//i,"")]);
@@ -62,10 +62,15 @@ class GaTracker extends SiteTreeExtension {
 					}
 				});';
 			$gacode = preg_replace('/(\t|\n)/', '', $gacode);
-			$gacode = str_replace(
-				array(' = ', ' != ','; ', ' + '),
-				array('=', '!=', ';', '+'),
-				$gacode);
+			$repl = array(
+					' = ' => '=',
+					' == ' => '==',
+					' != ' => '!=',
+					'; ' => ';',
+					' + ' => '+',
+					' ? ' => '?'
+				);
+			$gacode = str_replace(array_keys($repl), array_values($repl), $gacode);
 			if (!Director::isLive()) $gacode = '/*' . $gacode . '*/';
 			Requirements::customScript($gacode);
 		}
