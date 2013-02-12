@@ -7,7 +7,7 @@ function gaLt(e) {
 		var ref = document.location.pathname + document.location.search;
 		if( el.href.indexOf(location.host) == -1 ) {
 			_gaq.push(["_trackEvent","Outgoing Links",el.href,ref]);
-			if(!el.target){
+			if( !el.target ){
 				setTimeout(function(){document.location.href=el.href;}.bind(el),500);
 				return false;
 			}
@@ -21,7 +21,7 @@ function gaLt(e) {
 		}
 	}
 }
-
+/* Add tracker to all document click events */
 var b = document.body;
 var o = b.onclick;
 if ( typeof o != "function" ) o = gaLt;
