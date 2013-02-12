@@ -24,7 +24,7 @@ function gaLt(e) {
 /* Add tracker to all document click events */
 var b = document.body;
 var o = b.onclick;
-if ( typeof o != "function" ) o = gaLt;
+if ( typeof o != "function" ) b.onclick = gaLt;
 else {
 	b.onclick = function() {
 		o();
