@@ -15,12 +15,12 @@
 class GaTracker extends SiteTreeExtension {
 
 	/*
-	 * Injects GA tracking code & adds a javascript external file
+	 * Injects GA tracking code & adds a external JS file
 	 * to track downloads & outgoing links (as events)
 	 */
 	public function GoogleAnalytics() {
 
-		if(defined('GaTrackingCode')) {
+		if(DEFINED('GaTrackingCode')) {
 
 			$gacode = 'var _gaq = _gaq||[];' . $this->GoogleCode();
 
@@ -42,7 +42,7 @@ class GaTracker extends SiteTreeExtension {
 	 */
 	public function GoogleAnalyticsInline() {
 
-		if(defined('GaTrackingCode')) {
+		if(DEFINED('GaTrackingCode')) {
 
 			$gacode = @file_get_contents(
 					dirname( dirname( __FILE__ ) ) . '/javascript/gatracker.js'
