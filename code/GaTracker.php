@@ -32,12 +32,13 @@ class GaTracker extends SiteTreeExtension {
 					ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
 					var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga,s);
 				})();
+
 				function gaDlTracker(){
 					var a = document.getElementsByTagName("a");
 					for(i = 0; i < a.length; i++){
 						if(a[i].href.indexOf(location.host) == -1){
 							a[i].onclick = function(){
-								_gaq.push(["_trackEvent","Outgoing Links",this.href.replace(/^http\:\/\//i,"")]);
+								_gaq.push(["_trackEvent","Outgoing Links",this.href]);
 							}
 						}
 						else if(a[i].href.match(/\/assets\//)){
@@ -47,17 +48,15 @@ class GaTracker extends SiteTreeExtension {
 						}
 					}
 				}
-				(function(){
-					if(typeof window.onload != "function"){
-						window.onload = gaDlTracker;
-					}else{
-						var old = window.onload;
-						window.onload = function(){
-							old();
-							gaDlTracker();
-						}
+				var w = window;
+				var o = w.onload;
+				if (typeof w.onload != "function") w.onload = gaDlTracker;
+				else{
+					w.onload = function(){
+						o();
+						gaDlTracker();
 					}
-				});';
+				}';
 
 			$gacode = $this->Compress($gacode);
 			if (!Director::isLive()) $gacode = '/*' . $gacode . '*/';
