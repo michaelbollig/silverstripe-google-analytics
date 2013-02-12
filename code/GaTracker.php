@@ -26,8 +26,8 @@ class GaTracker extends SiteTreeExtension {
 
 			$gacode = $this->Compress($gacode);
 			if (!Director::isLive()) $gacode = '/*' . $gacode . '*/';
-			Requirements::customScript($gacode);
 
+			Requirements::customScript($gacode);
 			Requirements::javascript(
 				basename(dirname(dirname(__FILE__))) . "/javascript/gatracker.js"
 			);
@@ -49,6 +49,7 @@ class GaTracker extends SiteTreeExtension {
 				) .  $this->GoogleCode();
 
 			$gacode = $this->Compress($gacode);
+			
 			if (!Director::isLive()) $gacode = '/*' . $gacode . '*/';
 			Requirements::customScript($gacode);
 
@@ -67,7 +68,7 @@ class GaTracker extends SiteTreeExtension {
 
 			if ($statusCode == 404 || $statusCode == 500)
 				$code = '_gaq.push(["_setAccount","' . GaTrackingCode . '"]);
-				_gaq.push(["_trackEvent", "' . $statusCode . ' Pages", document.location.pathname + document.location.search, document.referrer]);';
+				_gaq.push(["_trackEvent", "Error Page (' . $statusCode . ')", document.location.pathname + document.location.search, document.referrer]);';
 			else
 				$code = '_gaq.push(["_setAccount","' . GaTrackingCode . '"],["_trackPageview"]);';
 
