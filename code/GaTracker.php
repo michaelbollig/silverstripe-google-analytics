@@ -14,7 +14,7 @@
 
 class GaTracker extends SiteTreeExtension {
 
-	function GoogleAnalytics() {
+	public function GoogleAnalytics() {
 
 		if(defined('GaTrackingCode')) {
 			$statusCode = Controller::curr()->getResponse()->getStatusCode();
@@ -24,6 +24,7 @@ class GaTracker extends SiteTreeExtension {
 				_gaq.push(["_trackEvent", "' . $statusCode . ' Pages", document.location.pathname + document.location.search, document.referrer]);';
 			else
 				$track = '_gaq.push(["_setAccount","' . GaTrackingCode . '"],["_trackPageview"]);';
+
 			$gacode = 'var _gaq = _gaq||[];
 				' . $track . '
 				(function(){
@@ -57,19 +58,36 @@ class GaTracker extends SiteTreeExtension {
 						}
 					}
 				});';
-			$gacode = preg_replace('/(\t|\n)/', '', $gacode);
-			$repl = array(
-					' = ' => '=',
-					' == ' => '==',
-					' != ' => '!=',
-					'; ' => ';',
-					' + ' => '+',
-					' ? ' => '?'
-				);
-			$gacode = str_replace(array_keys($repl), array_values($repl), $gacode);
+
+			$gacode = $this->Compress($gacode);
 			if (!Director::isLive()) $gacode = '/*' . $gacode . '*/';
 			Requirements::customScript($gacode);
 		}
+
+	}
+
+	/*
+	 * Compress inline JavaScript
+	 * @param str data
+	 * @return str
+	 */
+	protected function Compress($data) {
+		$repl = array(
+			'/(\n|\t)/' => '',
+			'/\s?=\s?/' => '=',
+			'/\s?==\s?/' => '==',
+			'/\s?!=\s?/' => '!=',
+			'/\s?;\s?/' => ';',
+			'/\s?\+\s?/' => '+',
+			'/\s?\?\s?/' => '?',
+			'/\s?&&\s?/' => '&&',
+			'/\s?\(\s?/' => '(',
+			'/\s?\)\s?/' => ')',
+			'/\s?\|\s?/' => '|',
+			'/\s<\s?/' => '<',
+			'/\s>\s?/' => '>',
+		);
+		return preg_replace( array_keys($repl), array_values($repl), $data );
 	}
 
 }
