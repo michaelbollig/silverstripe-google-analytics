@@ -66,9 +66,11 @@ class GaTracker extends SiteTreeExtension {
 
 		$statusCode = Controller::curr()->getResponse()->getStatusCode();
 
-			if ($statusCode == 404 || $statusCode == 500)
-				$code = '_gaq.push(["_setAccount","' . GaTrackingCode . '"]);
-				_gaq.push(["_trackEvent", "' . $statusCode . ' Errors", document.location.pathname + document.location.search, document.referrer]);';
+			if ($statusCode == 404 || $statusCode == 500) {
+				$ecode = ($statusCode == 404) ? 'Page Not Found' : 'Page Error';
+				$code  = '_gaq.push(["_setAccount","' . GaTrackingCode . '"]);';
+				$code .= '_gaq.push(["_trackEvent", "' . $ecode . '", document.location.pathname + document.location.search, document.referrer]);';
+			}
 			else
 				$code = '_gaq.push(["_setAccount","' . GaTrackingCode . '"],["_trackPageview"]);';
 
