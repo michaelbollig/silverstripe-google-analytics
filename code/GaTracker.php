@@ -68,7 +68,7 @@ class GaTracker extends SiteTreeExtension {
 
 			if ($statusCode == 404 || $statusCode == 500)
 				$code = '_gaq.push(["_setAccount","' . GaTrackingCode . '"]);
-				_gaq.push(["_trackEvent", "Error Pages (' . $statusCode . ')", document.location.pathname + document.location.search, document.referrer]);';
+				_gaq.push(["_trackEvent", "' . $statusCode . ' Error Pages", document.location.pathname + document.location.search, document.referrer]);';
 			else
 				$code = '_gaq.push(["_setAccount","' . GaTrackingCode . '"],["_trackPageview"]);';
 
