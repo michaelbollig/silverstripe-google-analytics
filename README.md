@@ -1,6 +1,4 @@
-# silverstripe-google-analytics
-
-## Google Analytics tracking code for SilverStripe 3
+# Google Analytics tracking code for SilverStripe 3
 Extension to add Google Analytics tracking code to your SilverStripe templates.
 
 It includes tracking for all external links & "assets" downloads using pure JavaScript,
