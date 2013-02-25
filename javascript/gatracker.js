@@ -34,6 +34,6 @@ function _gaLt(event){
 
 var d = document;
 if(d.addEventListener)
-	d.addEventListener("click",_gaLt);
+	d.addEventListener("click",_gaLt,false);
 else if(d.attachEvent)
 	d.attachEvent("onclick",_gaLt);
