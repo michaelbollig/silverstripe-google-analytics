@@ -25,6 +25,7 @@ class GaTracker extends SiteTreeExtension {
 			$gacode = 'var _gaq = _gaq||[];' . $this->GoogleCode();
 
 			$gacode = $this->Compress($gacode);
+
 			if (!Director::isLive()) $gacode = '/*' . $gacode . '*/';
 
 			Requirements::customScript($gacode);
