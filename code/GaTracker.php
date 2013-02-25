@@ -26,8 +26,6 @@ class GaTracker extends SiteTreeExtension {
 
 			$gacode = $this->Compress($gacode);
 
-			if (!Director::isLive()) $gacode = '/*' . $gacode . '*/';
-
 			Requirements::customScript($gacode);
 			Requirements::javascript(
 				basename(dirname(dirname(__FILE__))) . "/javascript/gatracker.js"
@@ -43,14 +41,15 @@ class GaTracker extends SiteTreeExtension {
 	 */
 	public function GoogleAnalyticsInline() {
 
-		$gacode = @file_get_contents(
-				dirname( dirname( __FILE__ ) ) . '/javascript/gatracker.js'
-			) . $this->GoogleCode();
+		if(DEFINED('GaTrackingCode')) {
+			$gacode = @file_get_contents(
+					dirname( dirname( __FILE__ ) ) . '/javascript/gatracker.js'
+				) . $this->GoogleCode();
 
-		$gacode = $this->Compress($gacode);
+			$gacode = $this->Compress($gacode);
 
-		Requirements::customScript($gacode);
-
+			Requirements::customScript($gacode);
+		}
 	}
 
 	/*
@@ -80,6 +79,7 @@ class GaTracker extends SiteTreeExtension {
 				var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga,s);
 			})();';
 
+		/* Only add GA JavaScript if live */
 		if (Director::isLive()) $code .=  $gacode;
 
 		return $code;
