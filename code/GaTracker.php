@@ -42,17 +42,13 @@ class GaTracker extends SiteTreeExtension {
 	 */
 	public function GoogleAnalyticsInline() {
 
-		if(DEFINED('GaTrackingCode')) {
+		$gacode = @file_get_contents(
+				dirname( dirname( __FILE__ ) ) . '/javascript/gatracker.js'
+			) . $this->GoogleCode();
 
-			$gacode = @file_get_contents(
-					dirname( dirname( __FILE__ ) ) . '/javascript/gatracker.js'
-				) .  $this->GoogleCode();
+		$gacode = $this->Compress($gacode);
 
-			$gacode = $this->Compress($gacode);
-
-			Requirements::customScript($gacode);
-
-		}
+		Requirements::customScript($gacode);
 
 	}
 
@@ -65,24 +61,27 @@ class GaTracker extends SiteTreeExtension {
 
 		$statusCode = Controller::curr()->getResponse()->getStatusCode();
 
-			if ($statusCode == 404 || $statusCode == 500) {
-				$ecode = ($statusCode == 404) ? 'Page Not Found' : 'Page Error';
-				$code  = '_gaq.push(["_setAccount","' . GaTrackingCode . '"]);';
-				$code .= '_gaq.push(["_trackEvent","' . $ecode . '",document.location.pathname + document.location.search, document.referrer]);';
-			}
-			else
-				$code = '_gaq.push(["_setAccount","' . GaTrackingCode . '"],["_trackPageview"]);';
+		$trackingCode = (defined('GaTrackingCode')) ? GaTrackingCode : false;
 
-			$gacode = '
-				(function(){
-					var ga = document.createElement("script"); ga.type = "text/javascript"; ga.async = true;
-					ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
-					var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga,s);
-				})();';
+		$code = ($trackingCode) ? '_gaq.push(["_setAccount","' . $trackingCode . '"]);' : false;
 
-			if (Director::isLive()) $code .=  $gacode;
+		if ($statusCode == 404 || $statusCode == 500) {
+			$ecode = ($statusCode == 404) ? 'Page Not Found' : 'Page Error';
+			$code .= '_gaq.push(["_trackEvent","' . $ecode . '",document.location.pathname + document.location.search, document.referrer]);';
+		}
+		else if ($trackingCode)
+			$code .= '_gaq.push(["_trackPageview"]);';
 
-			return $code;
+		$gacode = '
+			(function(){
+				var ga = document.createElement("script"); ga.type = "text/javascript"; ga.async = true;
+				ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
+				var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga,s);
+			})();';
+
+		if (Director::isLive()) $code .=  $gacode;
+
+		return $code;
 
 	}
 
