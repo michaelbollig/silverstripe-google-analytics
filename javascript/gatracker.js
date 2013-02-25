@@ -1,10 +1,10 @@
-var _gaq=_gaq||[];
+var _gaq = _gaq || [];
 
 function _gaLt(event){
 	var el = event.srcElement || event.target;
 
 	/* Loop through parent elements if clicked element is not a link (ie: <a><img /></a> */
-	while (el && (typeof el.tagName == 'undefined' || el.tagName.toLowerCase() != 'a' || !el.href))
+	while(el && (typeof el.tagName == 'undefined' || el.tagName.toLowerCase() != 'a' || !el.href))
 		el = el.parentNode;
 
 	if(el && el.href){
@@ -20,13 +20,13 @@ function _gaLt(event){
 			_gaq.push(t);
 			if(!el.target || el.target.match(/^_(self|parent|top)$/i)){
 				/* if target not set delay opening of window by 0.5s */
-				setTimeout(function(){document.location.href=el.href;}.bind(el),500);
+				setTimeout(function(){
+					document.location.href = el.href;
+				}.bind(el),500);
 				/* Prevent standard click */
-				if (event.preventDefault)
+				if(event.preventDefault)
 					event.preventDefault();
-				else {
-					event.returnValue=false;
-				}
+				else event.returnValue = false;
 			}
 		}
 	}
