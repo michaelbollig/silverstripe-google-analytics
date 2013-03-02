@@ -9,31 +9,32 @@ function _gaLt(event){
 
 	if(el && el.href){
 		dl = document.location;
-		ref = dl.pathname+dl.search;
+		l = dl.pathname+dl.search;
 		h = el.href;
-		t = false;
-		if(h.indexOf(location.host) == -1)
-			t = ["_trackEvent","Outgoing Links",h,ref];
-		else if (h.match(/\/assets\//) && !h.match(/\.(jpe?g|bmp|png|gif|tiff?)$/i))
-			t = ["_trackEvent","Downloads",h.match(/\/assets\/(.*)/)[1],ref];
-		if(t){
-			_gaq.push(t);
+		c = !1;
+		if(h.indexOf(location.host) == -1){
+			c = "Outgoing Links";
+			a = h;
+		}
+		else if(h.match(/\/assets\//) && !h.match(/\.(jpe?g|bmp|png|gif|tiff?)$/i)){
+			c = "Downloads";
+			a = h.match(/\/assets\/(.*)/)[1];
+		}
+		if(c){
+			/* push events to both primary & secondary */
+			_gaq.push(["_trackEvent",c,a,l],["b._trackEvent",c,a,l]);
+			/* if target not set delay opening of window by 0.5s */
 			if(!el.target || el.target.match(/^_(self|parent|top)$/i)){
-				/* if target not set delay opening of window by 0.5s */
 				setTimeout(function(){
 					document.location.href = el.href;
 				}.bind(el),500);
 				/* Prevent standard click */
-				if(event.preventDefault)
-					event.preventDefault();
-				else event.returnValue = false;
+				event.preventDefault ? event.preventDefault() : event.returnValue=!1;
 			}
 		}
+
 	}
 }
 
 var d = document;
-if(d.addEventListener)
-	d.addEventListener("click",_gaLt,false);
-else if(d.attachEvent)
-	d.attachEvent("onclick",_gaLt);
+d.addEventListener ? d.addEventListener("click",_gaLt,!1) : d.attachEvent && d.attachEvent("onclick",_gaLt);
