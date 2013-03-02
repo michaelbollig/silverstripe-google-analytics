@@ -21,7 +21,7 @@ Note: you must **Save & Publish** both your error pages after module installatio
 ## Usage
 In your _config.php or _ss_environment.php add your GA tracking code
 <pre>define('GaTrackingCode', 'UA-xxxxxx');</pre>
-as well as an optinal secondary tracker
+as well as an *optional* secondary tracker
 <pre>define('GaTrackingCodeSecondary', 'UA-yyyyyy');</pre>
 
 To include tracker with external JavaScript resource (download/outgoing tracking), simply add
