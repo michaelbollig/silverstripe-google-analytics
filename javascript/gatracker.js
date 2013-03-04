@@ -21,8 +21,9 @@ function _gaLt(event){
 			a = h.match(/\/assets\/(.*)/)[1];
 		}
 		if(c){
-			/* push events to both primary & secondary */
-			_gaq.push(["_trackEvent",c,a,l],["b._trackEvent",c,a,l]);
+			_gaq.push(["_trackEvent",c,a,l]);
+			/* Push secondary tracker if set */
+			_gaq2 && _gaq.push(["b._trackEvent",c,a,l]);
 			/* if target not set delay opening of window by 0.5s */
 			if(!el.target || el.target.match(/^_(self|parent|top)$/i)){
 				setTimeout(function(){

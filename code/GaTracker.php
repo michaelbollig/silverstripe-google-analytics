@@ -26,9 +26,10 @@ class GaTracker extends SiteTreeExtension {
 			$gacode = 'var _gaq = _gaq||[];' . $this->GoogleCode();
 			$gacode = $this->Compress($gacode);
 			Requirements::customScript($gacode);
-			Requirements::javascript(
-				basename(dirname(dirname(__FILE__))) . "/javascript/gatracker.js"
-			);
+			if (defined('GaTrackingCode'))
+				Requirements::javascript(
+					basename(dirname(dirname(__FILE__))) . "/javascript/gatracker.js"
+				);
 
 		}
 
@@ -78,6 +79,7 @@ class GaTracker extends SiteTreeExtension {
 		}
 
 		$code = 'var d = document; _gaq.push(' . implode($tracker, ',').');';
+		$code .= ($SecondaryTrackingCode) ? 'var _gaq2=true;' : 'var _gaq2=false;';
 
 		$gacode = '
 			(function(){
