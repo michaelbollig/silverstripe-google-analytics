@@ -79,7 +79,7 @@ class GaTracker extends SiteTreeExtension {
 		}
 
 		$code = 'var d = document; _gaq.push(' . implode($tracker, ',').');';
-		$code .= ($SecondaryTrackingCode) ? 'var _gaq2=!0;' : 'var _gaq2=!1;';
+		$code .= ($SecondaryTrackingCode) ? '_gaq2=!0;' : '_gaq2=!1;';
 
 		$gacode = '
 			(function(){

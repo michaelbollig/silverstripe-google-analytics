@@ -1,3 +1,4 @@
+/* Attach tracking to all download & external links */
 var _gaq = _gaq || [];
 
 function _gaLt(event){
@@ -9,7 +10,7 @@ function _gaLt(event){
 
 	if(el && el.href){
 		dl = document.location;
-		l = dl.pathname+dl.search;
+		l = dl.pathname + dl.search;
 		h = el.href;
 		c = !1;
 		if(h.indexOf(location.host) == -1){
@@ -24,13 +25,13 @@ function _gaLt(event){
 			_gaq.push(["_trackEvent",c,a,l]);
 			/* Push secondary tracker if set */
 			_gaq2 && _gaq.push(["b._trackEvent",c,a,l]);
-			/* if target not set delay opening of window by 0.5s */
+			/* if target not set delay opening of window by 0.5s to allow tracking */
 			if(!el.target || el.target.match(/^_(self|parent|top)$/i)){
 				setTimeout(function(){
 					document.location.href = el.href;
 				}.bind(el),500);
 				/* Prevent standard click */
-				event.preventDefault ? event.preventDefault() : event.returnValue=!1;
+				event.preventDefault ? event.preventDefault() : event.returnValue = !1;
 			}
 		}
 
