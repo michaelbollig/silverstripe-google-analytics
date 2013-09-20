@@ -17,11 +17,17 @@
 class GaTracker extends SiteTreeExtension {
 
 	/*
+	 * Ignore Tasks
+	 * Ignore pages loaded with common tasks, ie:
+	 * ?flush=[?] , /Security/login
+	 */
+	public static $ignore_tasks = true;
+
+	/*
 	 * Injects GA tracking code & adds a external JS file
 	 * to track downloads & outgoing links (as events)
 	 */
 	public function GoogleAnalytics() {
-
 		if(DEFINED('GaTrackingCode')) {
 			$gacode = 'var _gaq = _gaq||[];' . $this->GoogleCode();
 			$gacode = $this->Compress($gacode);
@@ -30,9 +36,7 @@ class GaTracker extends SiteTreeExtension {
 				Requirements::javascript(
 					basename(dirname(dirname(__FILE__))) . "/javascript/gatracker.js"
 				);
-
 		}
-
 	}
 
 	/*
@@ -40,7 +44,6 @@ class GaTracker extends SiteTreeExtension {
 	 * to track downloads & outgoing links (as events)
 	 */
 	public function GoogleAnalyticsInline() {
-
 		if(DEFINED('GaTrackingCode')) {
 			$gacode = @file_get_contents(
 					dirname( dirname( __FILE__ ) ) . '/javascript/gatracker.js'
@@ -89,10 +92,25 @@ class GaTracker extends SiteTreeExtension {
 			})();';
 
 		/* Only add GA JavaScript if live */
-		if (Director::isLive()) $code .=  $gacode;
+		if (Director::isLive() && !$this->isIgnored()) $code .=  $gacode;
 
 		return $code;
 
+	}
+
+	/*
+	 * Test if query if an admin task
+	 * @param null
+	 * @return true/false
+	 */
+	public function isIgnored() {
+		if (!self::$ignore_tasks)
+			return true;
+		if (Controller::curr()->Link() == 'Security/')
+			return true;
+		if (isset($_GET['flush']))
+			return true;
+		return false;
 	}
 
 	/*
@@ -120,4 +138,5 @@ class GaTracker extends SiteTreeExtension {
 		);
 		return preg_replace( array_keys($repl), array_values($repl), $data );
 	}
+
 }
