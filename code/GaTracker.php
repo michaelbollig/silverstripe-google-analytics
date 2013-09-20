@@ -92,7 +92,8 @@ class GaTracker extends SiteTreeExtension {
 			})();';
 
 		/* Only add GA JavaScript if live */
-		if (Director::isLive() && !$this->isIgnored()) $code .=  $gacode;
+		if (Director::isLive() && !$this->isIgnored())
+			$code .=  $gacode;
 
 		return $code;
 
