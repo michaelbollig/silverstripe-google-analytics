@@ -38,5 +38,5 @@ function _gaLt(event){
 	}
 }
 
-var d = document;
+var d = document.body;
 d.addEventListener ? d.addEventListener("click",_gaLt,!1) : d.attachEvent && d.attachEvent("onclick",_gaLt);
