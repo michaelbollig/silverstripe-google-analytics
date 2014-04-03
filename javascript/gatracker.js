@@ -39,7 +39,6 @@ function _gaLt(event){
 }
 
 /* Attach the event to all clicks in the document after page has loaded */
-window.onload = function(){
-	var d = document.body;
-	d.addEventListener ? d.addEventListener("click",_gaLt,!1) : d.attachEvent && d.attachEvent("onclick",_gaLt);
-}
+var w = window;
+w.addEventListener ? w.addEventListener("load",function(){document.body.addEventListener("click",_gaLt,!1)},!1)
+ : w.attachEvent && w.attachEvent("onload",function(){document.body.attachEvent("onclick",_gaLt)});
