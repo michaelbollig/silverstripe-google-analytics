@@ -13,20 +13,20 @@ function _gaLt(event){
 		l = dl.pathname + dl.search;
 		h = el.href;
 		c = !1;
-		if (h.indexOf('tel:') === 0) {
+		if(h.indexOf('tel:') === 0) {
 			c = "Phone";
 			a = h.replace(/\D/g,'');
-		} else if (h.indexOf('mailto:') === 0) {
+		} else if(h.indexOf('mailto:') === 0) {
 			c = "Email";
 			a = h.slice(7); 
-		} else if (h.indexOf(location.host) == -1){
+		} else if(h.indexOf(location.host) == -1){
 			c = "Outgoing Links";
 			a = h;
-		} else if (h.match(/\/assets\//) && !h.match(/\.(jpe?g|bmp|png|gif|tiff?)$/i)) {
+		} else if(h.match(/\/assets\//) && !h.match(/\.(jpe?g|bmp|png|gif|tiff?)$/i)) {
 			c = "Downloads";
 			a = h.match(/\/assets\/(.*)/)[1];
 		}
-		if (c){
+		if(c){
 			_gaq.push(["_trackEvent",c,a,l]);
 			/* Push secondary tracker if set */
 			_gaq2 && _gaq.push(["b._trackEvent",c,a,l]);
